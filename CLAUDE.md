@@ -25,7 +25,9 @@ JS — lives inline in `index.html`. Edit that one file.
 - Years are counted by calendar (anniversary check), not by dividing milliseconds, so
   leap years stay correct.
 - `.nojekyll` disables Jekyll processing — leave it in place.
-- `CNAME` (if present) holds the custom domain; it must match the domain configured in
-  GitHub Pages settings and in Cloudflare DNS. See `README.md` for the full Cloudflare setup.
+- `CNAME` holds the single canonical custom domain (`korovan.ru`). GitHub Pages allows
+  only one custom domain per repo; the second domain `kopobah.ru` ("korovan" in the
+  Russian keyboard layout) is a Cloudflare redirect to it, not a separate Pages site.
+  See `README.md` for the full Cloudflare DNS + redirect setup.
 - Page is Russian (`lang="ru"`); the copypasta is intentionally kept with its original
   misspellings — do not "fix" them.
