@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>КОРОВАН</title>
+  <meta name="description" content="Я джва года хочу такую игру.">
+  <meta property="og:title" content="КОРОВАН">
+  <meta property="og:description" content="Я джва года хочу такую игру.">
+  <style>
+    :root {
+      --bg: #f4f1e8;
+      --ink: #2a2a2a;
+      --accent: #8b1a1a;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+      padding: 2rem 1rem 4rem;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-family: Impact, "Arial Black", sans-serif;
+      letter-spacing: 0.15em;
+      text-align: center;
+      font-size: clamp(2.5rem, 12vw, 6rem);
+      margin: 0.5rem 0 0;
+      color: var(--accent);
+      text-shadow: 3px 3px 0 #d8d2c0;
+    }
+    .counter {
+      text-align: center;
+      margin: 2rem auto;
+      padding: 1.25rem 1rem;
+      background: #fff;
+      border: 3px solid var(--accent);
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 #d8d2c0;
+      font-family: "Courier New", monospace;
+    }
+    .counter .label {
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 0.5rem;
+    }
+    .counter .years {
+      font-size: clamp(1.6rem, 7vw, 2.6rem);
+      font-weight: bold;
+      color: var(--accent);
+    }
+    .counter .precise {
+      font-size: 0.95rem;
+      color: #444;
+      margin-top: 0.4rem;
+    }
+    .copypasta {
+      background: #fffdf6;
+      border: 1px solid #d8d2c0;
+      border-left: 5px solid var(--accent);
+      padding: 1.25rem 1.5rem;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      text-align: justify;
+    }
+    .copypasta .ps {
+      display: block;
+      margin-top: 1rem;
+      font-style: italic;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 0.85rem;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>КОРОВАН</h1>
+
+    <div class="counter">
+      <div class="label">Кирилл ждёт эту игру уже</div>
+      <div class="years" id="years">…</div>
+      <div class="precise" id="precise"></div>
+    </div>
+
+    <div class="copypasta">
+      Здраствуйте. Я, Кирилл. Хотел бы чтобы вы сделали игру, 3Д-экшон суть такова... Пользователь может играть лесными эльфами, охраной дворца и злодеем. И если пользователь играет эльфами то эльфы в лесу, домики деревяные набигают солдаты дворца и злодеи. Можно грабить корованы... И эльфу раз лесные то сделать так что там густой лес... А движок можно поставить так что вдали деревья картинкой, когда подходиш они преобразовываются в 3-хмерные деревья[1]. Можно покупать и т.п. возможности как в Daggerfall. И враги 3-хмерные тоже, и труп тоже 3д. Можно прыгать и т.п. Если играть за охрану дворца то надо слушаться командира, и защищать дворец от злого (имя я не придумал) и шпионов, партизанов эльфов, и ходит на набеги на когото из этих (эльфов, злого…). Ну а если за злого… то значит шпионы или партизаны эльфов иногда нападают, пользователь сам себе командир может делать что сам захочет прикажет своим войскам с ним самим напасть на дворец и пойдет в атаку. Всего в игре 4 зоны. Т.е. карта и на ней есть 4 зоны, 1 - зона людей (нейтрал), 2- зона императора (где дворец), 3-зона эльфов, 4 - зона злого… (в горах, там есть старый форт…) Так же чтобы в игре могли не только убить но и отрубить руку и если пользователя не вылечат то он умрет, так же выколоть глаз но пользователь может не умереть а просто пол экрана не видеть, или достать или купить протез, если ногу тоже либо умреш либо будеш ползать либо на коляске котаться, или самое хорошее… поставить протез. Сохранятся можно…
+      <span class="ps">P.S. Я джва года хочу такую игру.</span>
+    </div>
+
+    <footer>
+      грабим корованы с 26 ноября 1999 года<br>
+      <a href="https://neolurk.org/wiki/Корован" target="_blank" rel="noopener">Неолурк</a>
+      ·
+      <a href="https://bash.im/quote/1771" target="_blank" rel="noopener">Башорг</a>
+    </footer>
+  </div>
+
+  <script>
+    // Дата, с которой Кирилл ждёт игру.
+    var START = new Date("1999-11-26T00:00:00");
+
+    function pluralRu(n, forms) {
+      // forms = [одна, две, пять]  (год / года / лет)
+      var n10 = n % 10, n100 = n % 100;
+      if (n10 === 1 && n100 !== 11) return forms[0];
+      if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return forms[1];
+      return forms[2];
+    }
+
+    function update() {
+      var now = new Date();
+      var diffMs = now - START;
+      var totalSeconds = Math.floor(diffMs / 1000);
+
+      // Целые года считаем по календарю.
+      var years = now.getFullYear() - START.getFullYear();
+      var anniversary = new Date(START);
+      anniversary.setFullYear(START.getFullYear() + years);
+      if (now < anniversary) years--;
+
+      var yearWord = pluralRu(years, ["год", "года", "лет"]);
+
+      var days = Math.floor(totalSeconds / 86400);
+      var dayWord = pluralRu(days, ["день", "дня", "дней"]);
+
+      var h = Math.floor(totalSeconds / 3600) % 24;
+      var m = Math.floor(totalSeconds / 60) % 60;
+      var s = totalSeconds % 60;
+      var pad = function (x) { return (x < 10 ? "0" : "") + x; };
+
+      document.getElementById("years").textContent =
+        years + " " + yearWord;
+      document.getElementById("precise").textContent =
+        days.toLocaleString("ru-RU") + " " + dayWord +
+        " · " + pad(h) + ":" + pad(m) + ":" + pad(s);
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
