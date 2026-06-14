@@ -106,7 +106,7 @@
     <div class="logo">
       <span class="swords">⚔️</span><span class="caravan">🐫🐄🐫🐄🐫</span><span class="swords">⚔️</span>
     </div>
-    <h1>МОЖНО ГРАБИТЬ КОРОВАНЫ</h1>
+    <h1>ГРАБИТЬ КОРОВАНЫ</h1>
 
     <div class="counter">
       <div class="label">Кирилл ждёт эту игру уже</div>
@@ -143,6 +143,46 @@
       return forms[2];
     }
 
+    // Спеллинг целого числа прописью (мужской род — для "лет"/"год").
+    // Покрывает 0..999, чего с запасом хватает для счётчика лет.
+    function spellRu(n) {
+      if (n === 0) return "ноль";
+      var ones = ["", "один", "два", "три", "четыре", "пять", "шесть",
+                  "семь", "восемь", "девять"];
+      var teens = ["десять", "одиннадцать", "двенадцать", "тринадцать",
+                   "четырнадцать", "пятнадцать", "шестнадцать",
+                   "семнадцать", "восемнадцать", "девятнадцать"];
+      var tens = ["", "", "двадцать", "тридцать", "сорок", "пятьдесят",
+                  "шестьдесят", "семьдесят", "восемьдесят", "девяносто"];
+      var hundreds = ["", "сто", "двести", "триста", "четыреста",
+                      "пятьсот", "шестьсот", "семьсот", "восемьсот",
+                      "девятьсот"];
+      var parts = [];
+      var h = Math.floor(n / 100) % 10;
+      var t = Math.floor(n / 10) % 10;
+      var o = n % 10;
+      if (h) parts.push(hundreds[h]);
+      if (t === 1) {
+        parts.push(teens[o]);
+      } else {
+        if (t) parts.push(tens[t]);
+        if (o) parts.push(ones[o]);
+      }
+      return parts.join(" ");
+    }
+
+    // Та самая шутка из копипасты: «джва» вместо «два».
+    // \b в JS не работает с кириллицей, поэтому матчим по словам отдельно.
+    function dzhvaify(text) {
+      return text.split(" ").map(function (w) {
+        if (w === "двадцать") return "джвадцать";
+        if (w === "двести") return "джвести";
+        if (w === "две") return "джве";
+        if (w === "два") return "джва";
+        return w;
+      }).join(" ");
+    }
+
     function update() {
       var now = new Date();
       var diffMs = now - START;
@@ -159,20 +199,14 @@
       var days = Math.floor(totalSeconds / 86400);
       var dayWord = pluralRu(days, ["день", "дня", "дней"]);
 
-      var h = Math.floor(totalSeconds / 3600) % 24;
-      var m = Math.floor(totalSeconds / 60) % 60;
-      var s = totalSeconds % 60;
-      var pad = function (x) { return (x < 10 ? "0" : "") + x; };
-
       document.getElementById("years").textContent =
-        years + " " + yearWord;
+        dzhvaify(spellRu(years)) + " " + yearWord;
       document.getElementById("precise").textContent =
-        days.toLocaleString("ru-RU") + " " + dayWord +
-        " · " + pad(h) + ":" + pad(m) + ":" + pad(s);
+        days.toLocaleString("ru-RU") + " " + dayWord;
     }
 
     update();
-    setInterval(update, 1000);
+    setInterval(update, 60000);
   </script>
 </body>
 </html>
