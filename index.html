@@ -70,11 +70,6 @@
       font-weight: bold;
       color: var(--accent);
     }
-    .counter .precise {
-      font-size: 0.95rem;
-      color: #444;
-      margin-top: 0.4rem;
-    }
     .copypasta {
       background: #fffdf6;
       border: 1px solid #d8d2c0;
@@ -111,7 +106,6 @@
     <div class="counter">
       <div class="label">Кирилл ждёт эту игру уже</div>
       <div class="years" id="years">…</div>
-      <div class="precise" id="precise"></div>
     </div>
 
     <div class="copypasta">
@@ -120,7 +114,7 @@
     </div>
 
     <footer>
-      ждём, чтобы грабить корованы, с 26 ноября 1999 года<br>
+      ждём, чтобы грабить корованы<br>
       Неолурк:
       <a href="https://neolurk.org/wiki/Корованы" target="_blank" rel="noopener">1</a>,
       <a href="https://neolurk.org/wiki/Грабить_корованы" target="_blank" rel="noopener">2</a>
@@ -196,13 +190,8 @@
 
       var yearWord = pluralRu(years, ["год", "года", "лет"]);
 
-      var days = Math.floor(totalSeconds / 86400);
-      var dayWord = pluralRu(days, ["день", "дня", "дней"]);
-
       document.getElementById("years").textContent =
         dzhvaify(spellRu(years)) + " " + yearWord;
-      document.getElementById("precise").textContent =
-        days.toLocaleString("ru-RU") + " " + dayWord;
     }
 
     update();
