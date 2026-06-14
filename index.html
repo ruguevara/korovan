@@ -26,11 +26,24 @@
       max-width: 720px;
       margin: 0 auto;
     }
+    .logo {
+      text-align: center;
+      font-size: clamp(1.8rem, 8vw, 3.5rem);
+      line-height: 1;
+      margin: 0 0 0.5rem;
+      white-space: nowrap;
+    }
+    .logo .caravan {
+      letter-spacing: -0.1em;
+    }
+    .logo .swords {
+      color: var(--accent);
+    }
     h1 {
       font-family: Impact, "Arial Black", sans-serif;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.08em;
       text-align: center;
-      font-size: clamp(2.5rem, 12vw, 6rem);
+      font-size: clamp(1.8rem, 8vw, 4rem);
       margin: 0.5rem 0 0;
       color: var(--accent);
       text-shadow: 3px 3px 0 #d8d2c0;
@@ -89,7 +102,10 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>КОРОВАН</h1>
+    <div class="logo">
+      <span class="swords">⚔️</span><span class="caravan">🐫🐄🐫🐄🐫</span><span class="swords">⚔️</span>
+    </div>
+    <h1>МОЖНО ГРАБИТЬ КОРОВАНЫ</h1>
 
     <div class="counter">
       <div class="label">Кирилл ждёт эту игру уже</div>
@@ -104,9 +120,13 @@
 
     <footer>
       грабим корованы с 26 ноября 1999 года<br>
-      <a href="https://neolurk.org/wiki/Корован" target="_blank" rel="noopener">Неолурк</a>
+      Неолурк:
+      <a href="https://neolurk.org/wiki/Корованы" target="_blank" rel="noopener">1</a>,
+      <a href="https://neolurk.org/wiki/Грабить_корованы" target="_blank" rel="noopener">2</a>
       ·
-      <a href="https://bash.im/quote/1771" target="_blank" rel="noopener">Башорг</a>
+      <a href="https://башорг.рф/quote/22171" target="_blank" rel="noopener">Башорг</a>
+      <br>
+      <a href="https://019caa11-956a-773a-865e-77459a7c1735.arena.site/" target="_blank" rel="noopener">примитивная ИИ-имплементация той самой игры</a>
     </footer>
   </div>
 
