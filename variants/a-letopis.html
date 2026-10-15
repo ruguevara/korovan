@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>КОРОВАН — Летопись (вариант A)</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ruslan+Display&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --parchment: #efe3c8;
+      --parchment-dark: #e2d1ab;
+      --ink: #2b1d12;
+      --ink-soft: #5c4631;
+      --cinnabar: #b3261e;
+      --gold: #a8823a;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      color: var(--ink);
+      font-family: "Old Standard TT", Georgia, serif;
+      font-size: 1.12rem;
+      line-height: 1.65;
+      background:
+        radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(120, 80, 30, 0.18) 100%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.45  0 0 0 0 0.32  0 0 0 0 0.15  0 0 0 0.09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+        var(--parchment);
+      padding: 3rem 1rem 4rem;
+    }
+    .folio {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem clamp(1.25rem, 5vw, 4rem) 3rem;
+      border: 1px solid var(--gold);
+      outline: 4px double var(--gold);
+      outline-offset: 6px;
+      position: relative;
+      animation: unroll 0.9s cubic-bezier(.2,.7,.2,1) both;
+    }
+    .folio::before, .folio::after {
+      content: "✥";
+      position: absolute;
+      color: var(--cinnabar);
+      font-size: 1.4rem;
+      line-height: 1;
+      background: var(--parchment);
+      padding: 0 0.4rem;
+    }
+    .folio::before { top: -0.75rem; left: 50%; transform: translateX(-50%); }
+    .folio::after { bottom: -0.75rem; left: 50%; transform: translateX(-50%); }
+
+    .rubric {
+      text-align: center;
+      font-size: 0.82rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    h1 {
+      font-family: "Ruslan Display", serif;
+      font-weight: 400;
+      color: var(--cinnabar);
+      text-align: center;
+      font-size: clamp(2.4rem, 10vw, 4.6rem);
+      line-height: 1;
+      margin: 0.6rem 0 0.2rem;
+      text-shadow: 1px 1px 0 rgba(43, 29, 18, 0.15);
+    }
+    .vinette {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--gold);
+      margin: 1.4rem auto;
+      max-width: 340px;
+    }
+    .vinette::before, .vinette::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .counter {
+      text-align: center;
+      margin: 0 0 2.2rem;
+    }
+    .counter .label {
+      font-style: italic;
+      color: var(--ink-soft);
+    }
+    .counter .years {
+      font-family: "Ruslan Display", serif;
+      font-size: clamp(1.7rem, 6.5vw, 2.7rem);
+      line-height: 1.15;
+      color: var(--ink);
+      margin-top: 0.2rem;
+    }
+
+    .copypasta {
+      text-align: justify;
+      hyphens: auto;
+    }
+    .copypasta::first-letter {
+      float: left;
+      font-family: "Ruslan Display", serif;
+      font-size: 4.6em;
+      line-height: 0.82;
+      color: var(--parchment);
+      background: var(--cinnabar);
+      padding: 0.12em 0.14em 0.08em;
+      margin: 0.08em 0.16em 0 0;
+      border: 3px double var(--gold);
+      box-shadow: 0 0 0 2px var(--parchment), 0 0 0 3px var(--gold);
+    }
+    .copypasta .ps {
+      display: block;
+      margin-top: 1.4rem;
+      text-align: center;
+      font-style: italic;
+    }
+    .copypasta .ps s { color: var(--cinnabar); }
+
+    h2 {
+      font-family: "Ruslan Display", serif;
+      font-weight: 400;
+      text-align: center;
+      color: var(--cinnabar);
+      font-size: 1.6rem;
+      margin: 0 0 1.4rem;
+    }
+    .witness {
+      margin: 0 0 2.2rem;
+      text-align: center;
+    }
+    .witness a.plate {
+      display: block;
+      padding: 6px;
+      border: 1px solid var(--gold);
+      outline: 3px double var(--gold);
+      outline-offset: 3px;
+      background: var(--parchment-dark);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .witness a.plate:hover {
+      transform: rotate(-0.6deg) scale(1.01);
+      box-shadow: 0 14px 30px -18px rgba(43, 29, 18, 0.6);
+    }
+    .witness img {
+      display: block;
+      width: 100%;
+      filter: sepia(0.35) contrast(1.05);
+      transition: filter 0.4s ease;
+    }
+    .witness a.plate:hover img { filter: none; }
+    .witness figcaption {
+      margin-top: 1rem;
+      font-style: italic;
+    }
+    a { color: var(--cinnabar); }
+    .witness figcaption a { font-style: normal; font-weight: 700; }
+
+    footer {
+      text-align: center;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+    }
+
+    @keyframes unroll {
+      from { opacity: 0; transform: translateY(14px); clip-path: inset(0 0 100% 0); }
+      to { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .folio { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="folio">
+    <p class="rubric">Лѣтопись о корованахъ</p>
+    <h1>Грабить корованы</h1>
+    <div class="vinette">❦</div>
+
+    <div class="counter">
+      <div class="label">А ждёт Кириллъ сию игру уже</div>
+      <div class="years" id="years">…</div>
+    </div>
+
+    <div class="copypasta">
+      Здраствуйте. Я, Кирилл. Хотел бы чтобы вы сделали игру, 3Д-экшон суть такова... Пользователь может играть лесными эльфами, охраной дворца и злодеем. И если пользователь играет эльфами то эльфы в лесу, домики деревяные набигают солдаты дворца и злодеи. Можно грабить корованы... И эльфу раз лесные то сделать так что там густой лес... А движок можно поставить так что вдали деревья картинкой, когда подходиш они преобразовываются в 3-хмерные деревья[1]. Можно покупать и т.п. возможности как в Daggerfall. И враги 3-хмерные тоже, и труп тоже 3д. Можно прыгать и т.п. Если играть за охрану дворца то надо слушаться командира, и защищать дворец от злого (имя я не придумал) и шпионов, партизанов эльфов, и ходит на набеги на когото из этих (эльфов, злого…). Ну а если за злого… то значит шпионы или партизаны эльфов иногда нападают, пользователь сам себе командир может делать что сам захочет прикажет своим войскам с ним самим напасть на дворец и пойдет в атаку. Всего в игре 4 зоны. Т.е. карта и на ней есть 4 зоны, 1 - зона людей (нейтрал), 2- зона императора (где дворец), 3-зона эльфов, 4 - зона злого… (в горах, там есть старый форт…) Так же чтобы в игре могли не только убить но и отрубить руку и если пользователя не вылечат то он умрет, так же выколоть глаз но пользователь может не умереть а просто пол экрана не видеть, или достать или купить протез, если ногу тоже либо умреш либо будеш ползать либо на коляске котаться, или самое хорошее… поставить протез. Сохранятся можно…
+      <span class="ps">P.S. Я <s>джва года</s> <span id="ps-years">…</span> хочу такую игру.</span>
+    </div>
+
+    <div class="vinette">✦</div>
+    <h2>Свидетельства</h2>
+
+    <figure class="witness">
+      <a class="plate" href="https://animated-phoenix-eea5d4.netlify.app/" target="_blank" rel="noopener">
+        <img src="../game-screenshot-chatgpt.jpg" alt="Скриншот игры «Корованы — джва года спустя»">
+      </a>
+      <figcaption>
+        35 минут работы ChatGPT:
+        <a href="https://animated-phoenix-eea5d4.netlify.app/" target="_blank" rel="noopener">Демка</a>,
+        <a href="https://x.com/1red2black/status/2109908941949878687" target="_blank" rel="noopener">Твит</a>
+      </figcaption>
+    </figure>
+
+    <figure class="witness">
+      <a class="plate" href="https://yunit00.github.io/game-corovans/" target="_blank" rel="noopener">
+        <img src="../game-screenshot.jpg" alt="Скриншот игры «Корованы»">
+      </a>
+      <figcaption>
+        Попытка сделать на Claude Fable 5 (пока был доступен):
+        <a href="https://yunit00.github.io/game-corovans/" target="_blank" rel="noopener">Демка</a>,
+        <a href="https://github.com/yunit00/game-corovans" target="_blank" rel="noopener">Код</a>,
+        <a href="https://t.me/TochkiNadAI/2404" target="_blank" rel="noopener">Пост</a>
+      </figcaption>
+    </figure>
+
+    <div class="vinette">❦</div>
+    <footer>
+      Мы все ждём, когда можно грабить корованы<br>
+      Неолурк:
+      <a href="https://neolurk.org/wiki/Корованы" target="_blank" rel="noopener">1</a>,
+      <a href="https://neolurk.org/wiki/Грабить_корованы" target="_blank" rel="noopener">2</a>
+      ·
+      <a href="https://xn--80abh7bk0c.xn--p1ai/quote/22171" target="_blank" rel="noopener">Башорг</a>
+      <br>
+      <a href="https://github.com/ruguevara/korovan/edit/main/index.html" target="_blank" rel="noopener">+ Добавить свою ссылку</a>
+    </footer>
+  </main>
+
+  <script>
+    // Дата, с которой Кирилл ждёт игру.
+    var START = new Date("1999-11-26T00:00:00");
+
+    function pluralRu(n, forms) {
+      // forms = [одна, две, пять]  (год / года / лет)
+      var n10 = n % 10, n100 = n % 100;
+      if (n10 === 1 && n100 !== 11) return forms[0];
+      if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return forms[1];
+      return forms[2];
+    }
+
+    // Спеллинг целого числа прописью (мужской род — для "лет"/"год").
+    // Покрывает 0..999, чего с запасом хватает для счётчика лет.
+    function spellRu(n) {
+      if (n === 0) return "ноль";
+      var ones = ["", "один", "два", "три", "четыре", "пять", "шесть",
+                  "семь", "восемь", "девять"];
+      var teens = ["десять", "одиннадцать", "двенадцать", "тринадцать",
+                   "четырнадцать", "пятнадцать", "шестнадцать",
+                   "семнадцать", "восемнадцать", "девятнадцать"];
+      var tens = ["", "", "двадцать", "тридцать", "сорок", "пятьдесят",
+                  "шестьдесят", "семьдесят", "восемьдесят", "девяносто"];
+      var hundreds = ["", "сто", "двести", "триста", "четыреста",
+                      "пятьсот", "шестьсот", "семьсот", "восемьсот",
+                      "девятьсот"];
+      var parts = [];
+      var h = Math.floor(n / 100) % 10;
+      var t = Math.floor(n / 10) % 10;
+      var o = n % 10;
+      if (h) parts.push(hundreds[h]);
+      if (t === 1) {
+        parts.push(teens[o]);
+      } else {
+        if (t) parts.push(tens[t]);
+        if (o) parts.push(ones[o]);
+      }
+      return parts.join(" ");
+    }
+
+    // Та самая шутка из копипасты: «джва» вместо «два».
+    // \b в JS не работает с кириллицей, поэтому матчим по словам отдельно.
+    function dzhvaify(text) {
+      return text.split(" ").map(function (w) {
+        if (w === "двадцать") return "джвадцать";
+        if (w === "двести") return "джвести";
+        if (w === "две") return "джве";
+        if (w === "два") return "джва";
+        return w;
+      }).join(" ");
+    }
+
+    function update() {
+      var now = new Date();
+      var diffMs = now - START;
+      var totalSeconds = Math.floor(diffMs / 1000);
+
+      // Целые года считаем по календарю.
+      var years = now.getFullYear() - START.getFullYear();
+      var anniversary = new Date(START);
+      anniversary.setFullYear(START.getFullYear() + years);
+      if (now < anniversary) years--;
+
+      var yearWord = pluralRu(years, ["год", "года", "лет"]);
+
+      var spelled = dzhvaify(spellRu(years)) + " " + yearWord;
+      document.getElementById("years").textContent = spelled;
+      document.getElementById("ps-years").textContent = spelled;
+    }
+
+    update();
+    setInterval(update, 60000);
+  </script>
+</body>
+</html>
