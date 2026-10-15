@@ -3,7 +3,7 @@
     blender -b -P art/header.py -- header.png [scene.blend]
 
 Rendered like a late-90s game: soapy low-res tiled textures, no anti-aliasing,
-640x240 frame squeezed into a 256-colour VGA palette with ordered dithering.
+640x200 frame squeezed into a 256-colour VGA palette with ordered dithering.
 Scanlines are added in CSS. Everything is procedural and seeded: same script, same picture.
 """
 import bisect
@@ -26,11 +26,11 @@ BLEND = os.path.abspath(args[1]) if len(args) > 1 else None
 
 rnd = random.Random(19991126)  # Kirill's day one
 npr = np.random.default_rng(19991126)
-RES = 640, 240
+RES = 640, 200
 FOG = '#d9a25e'                # dusk haze == sky at the horizon
 SKY = [(0.0, FOG), (0.3, '#c98850'), (0.55, '#5e3c3a'), (0.8, '#1a1719'), (1.0, '#0b0d0a')]  # up to frame top
 FOG_START, FOG_DIST = 30.0, 260.0
-CAM, LOOK, LENS = Vector((0, -40, 8)), Vector((0, 40, -0.4)), 20
+CAM, LOOK, LENS = Vector((0, -40, 6.5)), Vector((0, 40, -0.2)), 20
 CASTLE = Vector((80, 215, 0))
 VILLAGE = Vector((-34, 32, 0))
 
