@@ -8,7 +8,8 @@ A single-page meme site ("КОРОВАН") hosted on GitHub Pages. It shows the 
 Kirill copypasta about wanting a game, plus a live counter of how many years he's
 been waiting. Counting starts **1999-11-26** (hardcoded as `START` in `index.html`).
 
-There is no build step, no framework, no dependencies. Everything — markup, CSS, and
+There is no build step, no framework, no dependencies (fonts — Press Start 2P + PT Mono — come
+from Google Fonts via `<link>`). Everything — markup, CSS, and
 JS — lives inline in `index.html`. Edit that one file.
 
 ## Commands

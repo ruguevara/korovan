@@ -15,163 +15,328 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="215x215" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f4f1e8;
-      --ink: #2a2a2a;
-      --accent: #8b1a1a;
+      --night: #0b0d0a;
+      --stone: #1b1913;
+      --stone-hi: #2a261c;
+      --gold: #d4a945;
+      --gold-dim: #8a6c2c;
+      --blood: #c8322b;
+      --moss: #7fae5a;
+      --text: #e9e2cc;
+      --text-dim: #a59c84;
+      --pixel: "Press Start 2P", monospace;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
+    html, body { margin: 0; }
     body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.6;
-      padding: 2rem 1rem 4rem;
-    }
-    .wrap {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-    .logo {
-      text-align: center;
-      font-size: clamp(1.8rem, 8vw, 3.5rem);
-      line-height: 1;
-      margin: 0 0 0.5rem;
-      white-space: nowrap;
-    }
-    .logo .caravan {
-      letter-spacing: 0.15em;
-    }
-    .logo .swords {
-      color: var(--accent);
-    }
-    h1 {
-      font-family: Impact, "Arial Black", sans-serif;
-      letter-spacing: 0.04em;
-      text-align: center;
-      font-size: clamp(1.4rem, 8.5vw, 4rem);
-      margin: 0.5rem 0 0;
-      color: var(--accent);
-      text-shadow: 3px 3px 0 #d8d2c0;
-      white-space: nowrap;
-    }
-    .counter {
-      text-align: center;
-      margin: 2rem auto;
-      padding: 1.25rem 1rem;
-      background: #fff;
-      border: 3px solid var(--accent);
-      border-radius: 8px;
-      box-shadow: 4px 4px 0 #d8d2c0;
-      font-family: "Courier New", monospace;
-    }
-    .counter .label {
-      font-family: Georgia, serif;
-      font-size: 0.95rem;
-      color: #555;
-      margin-bottom: 0.5rem;
-    }
-    .counter .years {
-      font-size: clamp(1.6rem, 7vw, 2.6rem);
-      font-weight: bold;
-      color: var(--accent);
-    }
-    .copypasta {
-      background: #fffdf6;
-      border: 1px solid #d8d2c0;
-      border-left: 5px solid var(--accent);
-      padding: 1.25rem 1.5rem;
-      margin: 2rem 0;
-      font-size: 1.05rem;
-      text-align: justify;
-    }
-    .copypasta .ps {
-      display: block;
-      margin-top: 1rem;
-      font-style: italic;
-      font-weight: bold;
-    }
-    .game-block {
-      text-align: center;
-      margin: 2rem 0 0;
-      padding: 1rem 1.25rem;
-      background: #fff;
-      border: 3px solid var(--accent);
-      border-radius: 8px;
-      box-shadow: 4px 4px 0 #d8d2c0;
+      background:
+        radial-gradient(ellipse at 50% -10%, rgba(212, 169, 69, 0.16), transparent 55%),
+        radial-gradient(ellipse at 50% 120%, rgba(127, 174, 90, 0.10), transparent 50%),
+        var(--night);
+      color: var(--text);
+      font-family: "PT Mono", monospace;
       font-size: 1rem;
+      line-height: 1.6;
+      padding: 1.25rem 1rem 4rem;
+      min-height: 100vh;
     }
-    .game-block img {
-      display: block;
-      width: 100%;
-      border-radius: 4px;
-      margin-bottom: 0.75rem;
+    .wrap { max-width: 780px; margin: 0 auto; }
+
+    /* Широкий экран: ТЗ Кирилла слева, сохранения и ссылки справа */
+    .columns { display: grid; gap: 0 1.5rem; }
+    @media (min-width: 1000px) {
+      .wrap { max-width: 1240px; }
+      .columns { grid-template-columns: 1.1fr 1fr; align-items: start; }
+      .side { position: sticky; top: 1rem; }
     }
-    .game-block a {
-      color: var(--accent);
-      font-weight: bold;
+
+    /* Рамка «каменной» панели с золотым кантом */
+    .panel {
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 6px),
+        linear-gradient(180deg, var(--stone-hi), var(--stone));
+      border: 2px solid var(--gold-dim);
+      box-shadow:
+        inset 0 0 0 2px #000,
+        inset 0 0 0 4px rgba(212, 169, 69, 0.25),
+        0 0 0 2px #000,
+        0 10px 30px -10px #000;
+      padding: 1.25rem 1.4rem;
+      margin: 0 0 1.5rem;
+      position: relative;
     }
+    .panel-title {
+      font-family: var(--pixel);
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin: 0 0 1rem;
+      text-transform: uppercase;
+    }
+
+    /* HUD */
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-family: var(--pixel);
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+    }
+    .bar { display: inline-flex; align-items: center; gap: 0.6rem; }
+    .bar i {
+      display: inline-block;
+      width: 110px; height: 10px;
+      border: 2px solid var(--text-dim);
+      background: linear-gradient(var(--blood), var(--blood)) no-repeat;
+      background-size: 18% 100%;
+      animation: drain 6s steps(6) infinite alternate;
+    }
+
+    h1 {
+      font-family: var(--pixel);
+      font-weight: 400;
+      text-align: center;
+      font-size: clamp(1.25rem, 6vw, 2.6rem);
+      line-height: 1.35;
+      margin: 0 0 0.6rem;
+      color: var(--gold);
+      text-shadow: 0 3px 0 #6b4f17, 0 6px 0 #000, 0 0 30px rgba(212, 169, 69, 0.35);
+    }
+    .subtitle {
+      text-align: center;
+      font-family: var(--pixel);
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      margin: 0 0 2.5rem;
+    }
+    .blink { animation: blink 1.1s steps(1) infinite; }
+
+    /* Квест */
+    .quest .years {
+      font-family: var(--pixel);
+      font-size: clamp(0.95rem, 4vw, 1.5rem);
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .quest .meta { color: var(--text-dim); font-size: 0.9rem; }
+    .progress {
+      margin-top: 1rem;
+      height: 18px;
+      border: 2px solid var(--gold-dim);
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress span {
+      position: absolute; inset: 0;
+      width: 99%;
+      background: repeating-linear-gradient(90deg, var(--moss) 0 10px, #5d8a3d 10px 12px);
+      animation: almost 4s ease-in-out infinite alternate;
+    }
+    .progress em {
+      position: absolute; right: 6px; top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--pixel); font-style: normal; font-size: 0.55rem;
+      color: #000; mix-blend-mode: normal;
+    }
+
+    /* Диалог */
+    .dialog { display: grid; grid-template-columns: 72px 1fr; gap: 1.2rem; align-items: start; }
+    .portrait {
+      width: 72px; height: 72px;
+      border: 2px solid var(--gold);
+      background:
+        linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.5)),
+        linear-gradient(135deg, #3e5a2a, #1f2d15);
+      display: grid; place-items: center;
+      font-size: 2.2rem;
+      image-rendering: pixelated;
+    }
+    .speaker {
+      font-family: var(--pixel); font-size: 0.65rem; color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .copypasta { color: var(--text); }
+    .copypasta .ps { display: block; margin-top: 1rem; color: var(--gold); }
+    .copypasta .ps s { color: var(--text-dim); }
+    .next {
+      display: block; text-align: right;
+      color: var(--gold); font-family: var(--pixel); font-size: 0.7rem;
+      animation: bob 0.8s ease-in-out infinite alternate;
+    }
+
+    /* Слоты сохранений */
+    .slots { display: grid; gap: 0.9rem; }
+    .slot {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.6rem;
+      border: 2px solid transparent;
+      background: rgba(0, 0, 0, 0.25);
+      position: relative;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .slot:hover, .slot:focus-within {
+      border-color: var(--gold);
+      background: rgba(212, 169, 69, 0.07);
+    }
+    .slot::before {
+      content: "►";
+      position: absolute; left: -1.4rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .slot:hover::before, .slot:focus-within::before { opacity: 1; animation: blink 0.6s steps(1) infinite; }
+    .slot img {
+      display: block; width: 100%;
+      border: 2px solid #000;
+      outline: 1px solid var(--gold-dim);
+    }
+    .slot .num { font-family: var(--pixel); font-size: 0.6rem; color: var(--text-dim); }
+    .slot .name { font-family: var(--pixel); font-size: 0.78rem; color: var(--text); margin: 0.5rem 0; line-height: 1.6; }
+    .slot .info { color: var(--text-dim); font-size: 0.92rem; }
+    .slot.empty { grid-template-columns: 1fr; text-align: center; padding: 1.2rem; border: 2px dashed var(--gold-dim); }
+    .slot.empty .name { color: var(--text-dim); }
+    a { color: var(--gold); }
+    a:hover { color: #fff; }
+
+    .lore { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+    .lore a {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: baseline;
+      padding: 0.7rem 0.9rem;
+      border: 2px solid transparent;
+      background: rgba(0, 0, 0, 0.25);
+      font-size: 1.15rem;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .lore a:hover { border-color: var(--gold); background: rgba(212, 169, 69, 0.07); color: var(--gold); }
+    .lore small { font-size: 0.8rem; color: var(--text-dim); white-space: nowrap; }
+
     footer {
       text-align: center;
-      color: #888;
-      font-size: 0.85rem;
-      margin-top: 1.5rem;
+      font-family: var(--pixel);
+      font-size: 0.6rem;
+      line-height: 1.8;
+      color: var(--text-dim);
+      margin-top: 1rem;
     }
-    footer a {
-      color: var(--accent);
+
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes bob { to { transform: translateY(4px); } }
+    @keyframes almost { from { width: 97%; } to { width: 99.4%; } }
+    @keyframes drain { from { background-size: 18% 100%; } to { background-size: 4% 100%; } }
+    @media (max-width: 600px) {
+      .slot { grid-template-columns: 1fr; }
+      .dialog { grid-template-columns: 1fr; }
+      .portrait { width: 56px; height: 56px; font-size: 1.6rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before { animation: none !important; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="logo">
-      <span class="swords">⚔️</span><span class="caravan">🐫🐄🐫🐄🐫</span><span class="swords">⚔️</span>
+    <div class="hud">
+      <span>ЗОНА 1 · ЛЮДИ (НЕЙТРАЛ)</span>
+      <span class="bar">ТЕРПЕНИЕ <i></i></span>
     </div>
-    <h1>ГРАБИТЬ КОРОВАНЫ</h1>
 
-    <div class="counter">
-      <div class="label">Кирилл ждёт эту игру уже</div>
+    <h1>ГРАБИТЬ<br>КОРОВАНЫ</h1>
+    <p class="subtitle">НАЖМИТЕ ЛЮБУЮ КЛАВИШУ<span class="blink">_</span></p>
+
+    <section class="panel quest">
+      <h2 class="panel-title">Квест: дождаться игры</h2>
+      <div class="meta">Взят у Кирилла 26.11.1999. Прошло:</div>
       <div class="years" id="years">…</div>
+      <div class="progress" aria-hidden="true"><span></span><em>99%</em></div>
+    </section>
+
+    <div class="columns">
+    <section class="panel">
+      <div class="dialog">
+        <div class="portrait" aria-hidden="true">🧝</div>
+        <div>
+          <div class="speaker">КИРИЛЛ:</div>
+          <div class="copypasta">
+            Здраствуйте. Я, Кирилл. Хотел бы чтобы вы сделали игру, 3Д-экшон суть такова... Пользователь может играть лесными эльфами, охраной дворца и злодеем. И если пользователь играет эльфами то эльфы в лесу, домики деревяные набигают солдаты дворца и злодеи. Можно грабить корованы... И эльфу раз лесные то сделать так что там густой лес... А движок можно поставить так что вдали деревья картинкой, когда подходиш они преобразовываются в 3-хмерные деревья[1]. Можно покупать и т.п. возможности как в Daggerfall. И враги 3-хмерные тоже, и труп тоже 3д. Можно прыгать и т.п. Если играть за охрану дворца то надо слушаться командира, и защищать дворец от злого (имя я не придумал) и шпионов, партизанов эльфов, и ходит на набеги на когото из этих (эльфов, злого…). Ну а если за злого… то значит шпионы или партизаны эльфов иногда нападают, пользователь сам себе командир может делать что сам захочет прикажет своим войскам с ним самим напасть на дворец и пойдет в атаку. Всего в игре 4 зоны. Т.е. карта и на ней есть 4 зоны, 1 - зона людей (нейтрал), 2- зона императора (где дворец), 3-зона эльфов, 4 - зона злого… (в горах, там есть старый форт…) Так же чтобы в игре могли не только убить но и отрубить руку и если пользователя не вылечат то он умрет, так же выколоть глаз но пользователь может не умереть а просто пол экрана не видеть, или достать или купить протез, если ногу тоже либо умреш либо будеш ползать либо на коляске котаться, или самое хорошее… поставить протез. Сохранятся можно…
+            <span class="ps">P.S. Я <s>джва года</s> <span id="ps-years">…</span> хочу такую игру.</span>
+          </div>
+          <span class="next" aria-hidden="true">▼</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="side">
+    <section class="panel">
+      <h2 class="panel-title">💾 Сохранятся можно… Загрузить игру</h2>
+      <div class="slots">
+        <div class="slot">
+          <a href="https://animated-phoenix-eea5d4.netlify.app/" target="_blank" rel="noopener">
+            <img src="game-screenshot-chatgpt.jpg" alt="Скриншот игры «Корованы — джва года спустя»">
+          </a>
+          <div>
+            <div class="num">СЛОТ 1</div>
+            <div class="name">ChatGPT</div>
+            <div class="info">
+              Время в игре: 35 минут работы.<br>
+              <a href="https://animated-phoenix-eea5d4.netlify.app/" target="_blank" rel="noopener">Демка</a>,
+              <a href="https://x.com/1red2black/status/2109908941949878687" target="_blank" rel="noopener">Твит</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slot">
+          <a href="https://yunit00.github.io/game-corovans/" target="_blank" rel="noopener">
+            <img src="game-screenshot.jpg" alt="Скриншот игры «Корованы»">
+          </a>
+          <div>
+            <div class="num">СЛОТ 2</div>
+            <div class="name">Claude Fable 5</div>
+            <div class="info">
+              Попытка сделать, пока был доступен.<br>
+              <a href="https://yunit00.github.io/game-corovans/" target="_blank" rel="noopener">Демка</a>,
+              <a href="https://github.com/yunit00/game-corovans" target="_blank" rel="noopener">Код</a>,
+              <a href="https://t.me/TochkiNadAI/2404" target="_blank" rel="noopener">Пост</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slot empty">
+          <div class="name">— ПУСТОЙ СЛОТ —</div>
+          <a href="https://github.com/ruguevara/korovan/edit/main/index.html" target="_blank" rel="noopener">+ Добавить свою ссылку</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">📜 Подробнее о меме</h2>
+      <ul class="lore">
+        <li><a href="https://neolurk.org/wiki/Корованы" target="_blank" rel="noopener">Корованы <small>Неолурк</small></a></li>
+        <li><a href="https://neolurk.org/wiki/Грабить_корованы" target="_blank" rel="noopener">Грабить корованы <small>Неолурк</small></a></li>
+        <li><a href="https://xn--80abh7bk0c.xn--p1ai/quote/22171" target="_blank" rel="noopener">Цитата #22171 <small>Башорг</small></a></li>
+      </ul>
+    </section>
+    </div>
     </div>
 
-    <div class="copypasta">
-      Здраствуйте. Я, Кирилл. Хотел бы чтобы вы сделали игру, 3Д-экшон суть такова... Пользователь может играть лесными эльфами, охраной дворца и злодеем. И если пользователь играет эльфами то эльфы в лесу, домики деревяные набигают солдаты дворца и злодеи. Можно грабить корованы... И эльфу раз лесные то сделать так что там густой лес... А движок можно поставить так что вдали деревья картинкой, когда подходиш они преобразовываются в 3-хмерные деревья[1]. Можно покупать и т.п. возможности как в Daggerfall. И враги 3-хмерные тоже, и труп тоже 3д. Можно прыгать и т.п. Если играть за охрану дворца то надо слушаться командира, и защищать дворец от злого (имя я не придумал) и шпионов, партизанов эльфов, и ходит на набеги на когото из этих (эльфов, злого…). Ну а если за злого… то значит шпионы или партизаны эльфов иногда нападают, пользователь сам себе командир может делать что сам захочет прикажет своим войскам с ним самим напасть на дворец и пойдет в атаку. Всего в игре 4 зоны. Т.е. карта и на ней есть 4 зоны, 1 - зона людей (нейтрал), 2- зона императора (где дворец), 3-зона эльфов, 4 - зона злого… (в горах, там есть старый форт…) Так же чтобы в игре могли не только убить но и отрубить руку и если пользователя не вылечат то он умрет, так же выколоть глаз но пользователь может не умереть а просто пол экрана не видеть, или достать или купить протез, если ногу тоже либо умреш либо будеш ползать либо на коляске котаться, или самое хорошее… поставить протез. Сохранятся можно…
-      <span class="ps">P.S. Я <s>джва года</s> <span id="ps-years">…</span> хочу такую игру.</span>
-    </div>
-
-    <div class="game-block">
-      <a href="https://animated-phoenix-eea5d4.netlify.app/" target="_blank" rel="noopener">
-        <img src="game-screenshot-chatgpt.jpg" alt="Скриншот игры «Корованы — джва года спустя»">
-      </a>
-      35 минут работы ChatGPT:
-      <a href="https://animated-phoenix-eea5d4.netlify.app/" target="_blank" rel="noopener">Демка</a>,
-      <a href="https://x.com/1red2black/status/2109908941949878687" target="_blank" rel="noopener">Твит</a>
-    </div>
-
-    <div class="game-block">
-      <a href="https://yunit00.github.io/game-corovans/" target="_blank" rel="noopener">
-        <img src="game-screenshot.jpg" alt="Скриншот игры «Корованы»">
-      </a>
-      <!--a href="https://t.me/TochkiNadAI/2397" target="_blank" rel="noopener"-->Попытка сделать на Claude Fable 5 (пока был доступен)<!--/a-->:
-      <a href="https://yunit00.github.io/game-corovans/" target="_blank" rel="noopener">Демка</a>,
-      <a href="https://github.com/yunit00/game-corovans" target="_blank" rel="noopener">Код</a>,
-      <a href="https://t.me/TochkiNadAI/2404" target="_blank" rel="noopener">Пост</a>
-    </div>
-
-    <footer>
-      Мы все ждём, когда можно грабить корованы<br>
-      Неолурк:
-      <a href="https://neolurk.org/wiki/Корованы" target="_blank" rel="noopener">1</a>,
-      <a href="https://neolurk.org/wiki/Грабить_корованы" target="_blank" rel="noopener">2</a>
-      ·
-      <a href="https://xn--80abh7bk0c.xn--p1ai/quote/22171" target="_blank" rel="noopener">Башорг</a>
-      <br>
-      <!-- <a href="https://019caa11-956a-773a-865e-77459a7c1735.arena.site/" target="_blank" rel="noopener">Более примитивная ИИ-имплементация той самой игры</a>
-      <br> -->
-      <a href="https://github.com/ruguevara/korovan/edit/main/index.html" target="_blank" rel="noopener">+ Добавить свою ссылку</a>
-    </footer>
+    <footer>Мы все ждём, когда можно грабить корованы</footer>
   </div>
 
   <script>
