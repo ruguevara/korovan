@@ -55,12 +55,11 @@
     }
     .wrap { max-width: 780px; margin: 0 auto; }
 
-    /* Широкий экран: ТЗ Кирилла слева, сохранения и ссылки справа */
+    /* Широкий экран: панели по две в ряд слева направо, в ряду одной высоты */
     .columns { display: grid; gap: 0 1.5rem; }
     @media (min-width: 1000px) {
       .wrap { max-width: 1240px; }
-      .columns { grid-template-columns: 1.1fr 1fr; align-items: start; }
-      .side { position: sticky; top: 1rem; }
+      .columns { grid-template-columns: 1.1fr 1fr; }
     }
 
     /* Рамка «каменной» панели с золотым кантом */
@@ -368,7 +367,6 @@
       </div>
     </section>
 
-    <div class="side">
     <section class="panel">
       <h2 class="panel-title">💾 Сохранятся можно… Загрузить игру</h2>
       <div class="slots">
@@ -403,6 +401,50 @@
           </div>
         </div>
 
+        <div class="slot">
+          <a href="https://krestnikov.org/korovany/" target="_blank" rel="noopener">
+            <img src="game-screenshot-museum.jpg" alt="Скриншот варианта GPT-6 из музея «Корованы»">
+          </a>
+          <div>
+            <div class="num">СЛОТ 3</div>
+            <div class="name">12 моделей</div>
+            <div class="info">
+              Одно ТЗ, каждая модель вслепую: от GPT-5.5 и Opus 4.8 до GPT-6 и Fable 5.1.<br>
+              <a href="https://krestnikov.org/korovany/" target="_blank" rel="noopener">Музей</a>,
+              <a href="https://github.com/Rai220/korovany" target="_blank" rel="noopener">Код</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slot">
+          <a href="https://xn--80adxocan6g.xn--p1ai/" target="_blank" rel="noopener">
+            <img src="game-screenshot-codex.jpg" alt="Скриншот игры «Джва года: корованы»">
+          </a>
+          <div>
+            <div class="num">СЛОТ 4</div>
+            <div class="name">Codex /goal</div>
+            <div class="info">
+              Сергей Пименов дал Codex письмо Кирилла — вышла корованы.рф.<br>
+              <a href="https://xn--80adxocan6g.xn--p1ai/" target="_blank" rel="noopener">Демка</a>,
+              <a href="https://pimenov.ai/articles/korovany-rf-codex-goal-game/" target="_blank" rel="noopener">Статья</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slot">
+          <a href="https://trikem.itch.io/cowravans" target="_blank" rel="noopener">
+            <img src="game-screenshot-trikem.jpg" alt="Скриншот игры «Можно грабить корованы!»">
+          </a>
+          <div>
+            <div class="num">СЛОТ 5</div>
+            <div class="name">ИИ без имени</div>
+            <div class="info">
+              Помечена «сделано с ИИ», модель не названа. 22 миссии, коровы, хот-сит.<br>
+              <a href="https://trikem.itch.io/cowravans" target="_blank" rel="noopener">Демка</a>
+            </div>
+          </div>
+        </div>
+
         <div class="slot empty">
           <div class="name">— ПУСТОЙ СЛОТ —</div>
           <a href="https://github.com/ruguevara/korovan/edit/main/index.html" target="_blank" rel="noopener">+ Добавить свою ссылку</a>
@@ -426,7 +468,6 @@
         <li><a href="https://xn--80abh7bk0c.xn--p1ai/quote/22171" target="_blank" rel="noopener">Цитата #22171 <small>Башорг</small></a></li>
       </ul>
     </section>
-    </div>
     </div>
 
     <footer>Мы все ждём, когда можно грабить корованы</footer>
