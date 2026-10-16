@@ -164,6 +164,63 @@
     }
     .hero .subtitle { color: var(--text); text-shadow: 0 2px 0 #000; }
 
+    /* Квест и кассета с техно-демкой '99 в один ряд; на узком экране кассета под квестом.
+       Кассета — синий экран видика, по клику — окно с видео (#tape) */
+    .quest-row { display: grid; column-gap: 1.5rem; }
+    @media (min-width: 700px) {
+      .quest-row { grid-template-columns: 1fr clamp(200px, 26%, 320px); }
+      .quest-row .vhs { aspect-ratio: auto; } /* высота — по панели квеста */
+    }
+    .vhs {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin: 0 0 1.5rem;
+      padding: 0.6rem 0.8rem;
+      background: repeating-linear-gradient(rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 3px), #1d2fc0;
+      border: 2px solid var(--gold-dim);
+      box-shadow: inset 0 0 0 2px #000, 0 0 0 2px #000;
+      color: #fff;
+      font-family: var(--pixel);
+      font-size: 0.5rem;
+      line-height: 1.6;
+      text-decoration: none;
+      text-shadow: 1px 0 rgba(255, 40, 120, 0.8), -1px 0 rgba(40, 230, 255, 0.8);
+    }
+    .vhs:hover, .vhs:focus-visible { color: #fff; border-color: var(--gold); }
+    .vhs::before { /* полоса трекинга ползёт сверху вниз */
+      content: "";
+      position: absolute; left: 0; right: 0; top: -15%;
+      height: 15%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='40'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9 .06'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.55;
+      animation: tracking 4.5s linear infinite;
+    }
+    .vhs .osd { display: flex; justify-content: space-between; }
+    .vhs .label { align-self: center; text-align: center; font-size: 0.7rem; }
+    .vhs .label small { display: block; font-size: 0.5rem; }
+
+    .tape {
+      width: min(960px, 92vw, calc((100dvh - 9rem) * 16 / 9));
+      max-width: none;
+      margin: auto;
+      color: var(--text);
+    }
+    .tape::backdrop { background: rgba(0, 0, 0, 0.8); }
+    .tape .panel-title { padding-right: 2rem; }
+    .tape .close {
+      position: absolute; top: 0.9rem; right: 1rem;
+      background: none; border: 0; padding: 0.2rem;
+      color: var(--gold); font: 0.8rem var(--pixel);
+      cursor: pointer;
+    }
+    .tape .close:hover { color: #fff; }
+    .tape .screen { aspect-ratio: 16 / 9; background: #000; outline: 1px solid var(--gold-dim); }
+    .tape iframe { display: block; width: 100%; height: 100%; border: 0; }
+
     /* Квест */
     .quest .years {
       font-family: var(--pixel);
@@ -285,6 +342,7 @@
     @keyframes blink { 50% { opacity: 0; } }
     @keyframes bob { to { transform: translateY(4px); } }
     @keyframes almost { from { width: 97%; } to { width: 99.4%; } }
+    @keyframes tracking { to { top: 100%; } }
     @media (max-width: 600px) {
       .slot { grid-template-columns: 1fr; }
       .dialog { grid-template-columns: 1fr; }
@@ -344,13 +402,28 @@
     </div>
   </header>
 
+  <dialog class="panel tape" id="tape" closedby="any" aria-labelledby="tape-title">
+    <h2 class="panel-title" id="tape-title">📼 Техно-демка · VHS · 1999</h2>
+    <form method="dialog"><button class="close" aria-label="Закрыть">✕</button></form>
+    <div class="screen"></div>
+  </dialog>
+
   <div class="wrap">
-    <section class="panel quest">
-      <h2 class="panel-title">Квест: дождаться игры</h2>
-      <div class="meta">Взят у Кирилла 26.11.1999. Прошло:</div>
-      <div class="years" id="years">…</div>
-      <div class="progress" aria-hidden="true"><span></span><em>99%</em></div>
-    </section>
+
+    <div class="quest-row">
+      <section class="panel quest">
+        <h2 class="panel-title">Квест: дождаться игры</h2>
+        <div class="meta">Взят у Кирилла 26.11.1999. Прошло:</div>
+        <div class="years" id="years">…</div>
+        <div class="progress" aria-hidden="true"><span></span><em>99%</em></div>
+      </section>
+      <a class="vhs" id="tape-play" href="https://www.youtube.com/watch?v=W20So1XpsPU" target="_blank" rel="noopener"
+         aria-label="Смотреть видео: техно-демка корованов, как если бы её сделали в 1999 году">
+        <span class="osd">PLAY ►<span>SP</span></span>
+        <span class="label">ТЕХНОДЕМКА<small>— 1999 —</small></span>
+        <span class="osd">26.11.1999<span>0:00:00</span></span>
+      </a>
+    </div>
 
     <div class="columns">
     <section class="panel">
@@ -564,6 +637,19 @@
 
     update();
     setInterval(update, 60000);
+
+    // Кассета: плеер YouTube вставляем при открытии окна и убираем при закрытии —
+    // так видео не грузится зря и останавливается. Без JS кнопка — просто ссылка.
+    var tape = document.getElementById("tape");
+    var tapeScreen = tape.querySelector(".screen");
+    document.getElementById("tape-play").addEventListener("click", function (e) {
+      e.preventDefault();
+      var id = new URL(this.href).searchParams.get("v");
+      tapeScreen.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id +
+        '?autoplay=1" title="Можно грабить корованы: техно-демка на VHS" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+      tape.showModal();
+    });
+    tape.addEventListener("close", function () { tapeScreen.innerHTML = ""; });
   </script>
 </body>
 </html>
